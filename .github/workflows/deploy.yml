@@ -1,0 +1,51 @@
+name: Deploy to GKE
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  PROJECT_ID: tourguide-393611
+  GKE_CLUSTER: tg-kube-cluster
+  GKE_ZONE: europe-southwest1
+  DEPLOYMENT_NAME: tg-multimedia-service
+  CONTAINER: gcr.io/tourguide-393611/tg-multimedia-service
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3 # Updated to use v3
+
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v1 # Updated action for authentication
+      with:
+        credentials_json: ${{ secrets.TOURGUIDE_GKE_GITHUB_DEPLOY_KEY }}
+
+    - name: Setup Google Cloud CLI
+      uses: google-github-actions/setup-gcloud@v1
+      with:
+        project_id: ${{ env.PROJECT_ID }}
+        install_components: kubectl # Add this line if kubectl is not already installed
+
+    - name: Create ConfigMaps if Not Exist
+      run: |
+        kubectl get configmap my-config-map || kubectl create configmap my-config-map --from-literal=SPRING_PROFILES_ACTIVE=prod
+
+    - name: Configure Docker to use the gcloud command-line tool as a credential helper
+      run: gcloud --quiet auth configure-docker
+
+    - name: Connect kubectl to GKE
+      run: |
+        gcloud container clusters get-credentials ${{ env.GKE_CLUSTER }} --zone ${{ env.GKE_ZONE }}
+
+    - name: Create ConfigMaps if Not Exist
+      run: |
+        kubectl get configmap multimedia-config || kubectl create configmap multimedia-config --from-literal=SPRING_PROFILES_ACTIVE=prod
+
+    - name: Deploy to GKE
+      run: |
+        kubectl apply -f deployment.yaml
+        kubectl apply -f service.yaml

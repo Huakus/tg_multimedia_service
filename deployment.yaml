@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tg-multimedia-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tg-multimedia-service
+  template:
+    metadata:
+      labels:
+        app: tg-multimedia-service
+    spec:
+      containers:
+      - name: tg-multimedia-service
+        image: gcr.io/tourguide-393611/tg-multimedia-service
+        ports:
+        - containerPort: 8012
+        volumeMounts:               # Add this section
+        - name: multimedia-config
+          mountPath: /config       # You can choose the path where you want to mount it
+      volumes:                      # Add this section
+      - name: multimedia-config
+        configMap:
+          name: multimedia-config
