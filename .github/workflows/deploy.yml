@@ -37,6 +37,7 @@ jobs:
     # Build and push Docker image to GCR
     - name: Build and Push Docker Image
       run: |
+        ./mvnw package
         docker build -t ${{ env.CONTAINER }}:latest .
         docker push ${{ env.CONTAINER }}:latest
 
