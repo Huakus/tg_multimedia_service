@@ -30,8 +30,15 @@ jobs:
         project_id: ${{ env.PROJECT_ID }}
         install_components: kubectl # Add this line if kubectl is not already installed
 
-    - name: Configure Docker to use the gcloud command-line tool as a credential helper
+    # Configure Docker to use the gcloud command-line tool as a credential helper
+    - name: Configure Docker
       run: gcloud --quiet auth configure-docker
+
+    # Build and push Docker image to GCR
+    - name: Build and Push Docker Image
+      run: |
+        docker build -t ${{ env.CONTAINER }}:latest .
+        docker push ${{ env.CONTAINER }}:latest
 
     - name: Connect kubectl to GKE
       run: |
