@@ -13,7 +13,7 @@ env:
   CONTAINER: gcr.io/tourguide-393611/tg-multimedia-service
 
 jobs:
-- build_application:
+  build application:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -29,8 +29,7 @@ jobs:
     - name: Build maven package
       run: |
         mvn package
-
-- authenticate_GCP:
+        
     - name: Authenticate to Google Cloud
       uses: google-github-actions/auth@v1 # Updated action for authentication
       with:
@@ -49,8 +48,7 @@ jobs:
     - name: Connect kubectl to GKE
       run: |
         gcloud container clusters get-credentials ${{ env.GKE_CLUSTER }} --zone ${{ env.GKE_ZONE }}
-
-- push_deploy_image:
+        
     # Build and push Docker image to GCR
     - name: Build and Push Docker Image
       run: |
