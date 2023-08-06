@@ -13,7 +13,7 @@ env:
   CONTAINER: gcr.io/tourguide-393611/tg-multimedia-service
 
 jobs:
-  build_application:
+- build application:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -30,7 +30,7 @@ jobs:
       run: |
         mvn package
 
-  authenticate_GCP:
+- authenticate GCP:
     - name: Authenticate to Google Cloud
       uses: google-github-actions/auth@v1 # Updated action for authentication
       with:
@@ -50,7 +50,7 @@ jobs:
       run: |
         gcloud container clusters get-credentials ${{ env.GKE_CLUSTER }} --zone ${{ env.GKE_ZONE }}
 
-  push_deploy_image:
+- push image and deploy:
     # Build and push Docker image to GCR
     - name: Build and Push Docker Image
       run: |
