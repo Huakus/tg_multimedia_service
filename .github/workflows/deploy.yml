@@ -45,15 +45,15 @@ jobs:
     - name: Configure Docker
       run: gcloud --quiet auth configure-docker
 
-    - name: Connect kubectl to GKE
-      run: |
-        gcloud container clusters get-credentials ${{ env.GKE_CLUSTER }} --zone ${{ env.GKE_ZONE }}
-        
     # Build and push Docker image to GCR
     - name: Build and Push Docker Image
       run: |
         docker build -t ${{ env.CONTAINER }}:latest .
         docker push ${{ env.CONTAINER }}:latest
+
+    - name: Connect kubectl to GKE
+      run: |
+        gcloud container clusters get-credentials ${{ env.GKE_CLUSTER }} --zone ${{ env.GKE_ZONE }}
 
     - name: Create ConfigMaps if Not Exist
       run: |
