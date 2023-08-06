@@ -13,7 +13,7 @@ env:
   CONTAINER: gcr.io/tourguide-393611/tg-multimedia-service
 
 jobs:
-  - build_application:
+  build_application:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
