@@ -29,7 +29,7 @@ jobs:
     - name: Build maven package
       run: mvn package
 
-  authenticate_gcloud:
+  setup_gcloud:
     runs-on: ubuntu-latest
     steps:
     - name: Authenticate to Google Cloud
@@ -37,10 +37,6 @@ jobs:
       with:
         credentials_json: ${{ secrets.TOURGUIDE_GKE_GITHUB_DEPLOY_KEY }}
 
-  setup_gcloud:
-    needs: authenticate_gcloud
-    runs-on: ubuntu-latest
-    steps:
     - name: Setup Google Cloud CLI
       uses: google-github-actions/setup-gcloud@v1
       with:
