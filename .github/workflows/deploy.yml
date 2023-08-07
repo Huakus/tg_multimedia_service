@@ -29,6 +29,12 @@ jobs:
     - name: Build maven package
       run: mvn package
 
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: build
+        path: target/*.jar
+
   setup_gcloud:
     runs-on: ubuntu-latest
     steps:
@@ -55,6 +61,12 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+
+    - name: Download build artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: build
+        path: target
 
     - name: Build and Push Docker Image
       run: |
