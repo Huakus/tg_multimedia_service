@@ -71,6 +71,11 @@
 			<artifactId>mysql</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>google-cloud-storage</artifactId>
+			<version>1.113.15</version>
+		</dependency>
 	</dependencies>
 
 	<build>
