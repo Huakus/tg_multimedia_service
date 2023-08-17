@@ -9,7 +9,7 @@ import org.testcontainers.utility.DockerImageName;
 
 @TestConfiguration(proxyBeanMethods = false)
 public class TestMultimediaApplication {
-
+/*
 	@Bean
 	@ServiceConnection
 	MySQLContainer<?> mysqlContainer() {
@@ -19,5 +19,5 @@ public class TestMultimediaApplication {
 	public static void main(String[] args) {
 		SpringApplication.from(MultimediaApplication::main).with(TestMultimediaApplication.class).run(args);
 	}
-
+ */
 }
